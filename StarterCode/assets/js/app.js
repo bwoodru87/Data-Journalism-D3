@@ -1,7 +1,7 @@
 
 // declare svg dimensions
-var svgWidth = 600;
-var svgHeight = 500;
+var svgWidth = 1000;
+var svgHeight = 700;
 
 // set margins
 var margin = {
@@ -76,13 +76,21 @@ d3.csv("data.csv")
         .append("circle")
         .attr("cx", d=>xLinearScale(d.poverty))
         .attr("cy", d=>yLinearScale(d.healthcare))
-        .attr("r", 10)
-        .html(function(d){
-            return d.abbr
-        })
+        .attr("r", 13)
         .attr("fill", "teal")
-        .attr("stroke-width", "1")
-        .attr("stroke", "black");
+        .attr("opacity", .7)
+        .attr("stroke-width", "1");
+
+    var chartText = chartGroup.selectAll(null)
+        .data(newsData)
+        .enter()
+        .append("text")
+        .attr("dx", d=>xLinearScale(d.poverty))
+        .attr("dy", d=>yLinearScale(d.healthcare))
+        .attr("font-size", 10)
+        .attr("text-anchor", "middle")
+        .text(d => d.abbr);
+
 
     // initialize tool tip
     var toolTip = d3.tip()
@@ -96,7 +104,7 @@ d3.csv("data.csv")
     chartGroup.call(toolTip);
 
     // create the mouseover event listeners
-    circlesGroup.on("mouseover", function(d){
+    chartText.on("mouseover", function(d){
         toolTip.show(d, this);
     })
         .on("mouseout", function(d){
